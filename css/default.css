@@ -1,0 +1,7 @@
+.capital-case {
+    text-transform: capitalize;
+}
+
+.tab-pane {
+    width: 50%;
+}
