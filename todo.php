@@ -18,10 +18,13 @@ class Todo
         return $result;
     }
 
- //update existing todo task in database 
-    function update_task($id)
+ //update existing todo task name in database 
+    function update_task($data)
     {
-
+        
+        $query = "UPDATE todo SET task='$data[task_name]' WHERE id=$data[task_id]";
+        $result =$this->mysql->query($query) or die($this->mysql->error);
+        return $result;
     }
 
 //delete exisiting todo task from database
@@ -30,6 +33,28 @@ class Todo
         $query ="DELETE FROM todo WHERE id=$id";
         $result = $this->mysql->query($query) or die($this ->mysql->error);
         return $result;
+    }
+//update exisiting todo task status in database
+    function update_task_status($id)
+    {
+        $query = "SELECT status FROM todo WHERE id = $id";
+        $result = $this->mysql->query($query) or die($db->mysql->error); 
+        $task_status;
+        while($row = $result->fetch_object())
+                            {
+                                $task_status = $row->status;
+                            }
+        if($task_status == 1)
+        {
+         $q = "UPDATE todo SET status = 2 WHERE id=$id";
+        }
+        elseif($task_status==2)
+        {
+             $q = "UPDATE todo SET status = 1 WHERE id=$id";
+        }
+        //$query ="DELETE FROM todo WHERE id=$id";
+        $res  = $this->mysql->query($q) or die($this ->mysql->error);
+        return $res;
     }
 
 // read all todo tasks from database
@@ -45,9 +70,10 @@ class Todo
                           $rows = array();
                           while($row = $results->fetch_object())
                             {
-                                $task_title = $row->task;
-                                $id = $row -> id; 
-                                $rows[$id] = $task_title;
+                                $task_id     = $row -> id;
+                                $task_title  = $row->task;
+                                $task_status = $row->status; 
+                                $rows[$task_id] = ["task_name"=>$task_title,"task_status"=>$task_status];
                             }
                             return json_encode($rows);
                          }
@@ -80,7 +106,27 @@ if(isset($_POST['query']) && $_POST['query'] == 'getTasks')
         echo $res;
     }
 }
+// edit task
+if(isset($_POST['query']) && $_POST['query'] =='edit')
+{
+    $task_name = $_POST['data_obj']['task_name'];
+    $task_id = $_POST['data_obj']['id'];
+    $data = ['task_id'=>$task_id,'task_name'=>$task_name];
+    $res = $task_obj -> update_task($data);
+    if($res)
+    {
+        print_r($res);
+echo "Task Name Updated Successfully!";
+    }
+    else{
+        echo "Oops something wrong Failed to update ";
+    }
+     
+   
+    
+}
 
+// delete task
 if(isset($_POST['query']) && $_POST['query'] =='delete')
 {
     $id = $_POST['id'];
@@ -92,6 +138,21 @@ echo "Task deleted Successfully! $id";
     else{
         echo "Oops something wrong ";
     }
+    
+}
+//status update
+if(isset($_POST['query']) && $_POST['query'] =='status')
+{
+    $id = $_POST['id'];
+    $res = $task_obj -> update_task_status($id);
+    if($res)
+    {
+    echo "Task status updated Successfully! $res";
+    }
+    else{
+        echo "Oops something wrong ";
+    }
+    
     
 }
 ?>

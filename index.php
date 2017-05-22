@@ -40,7 +40,7 @@
                              <div class="panel-body capital-case">
                                 <div class="text-primary todo_tasks"> </div> 
                                 <div class="container-fluid add">
-                                 <input type="text" class="form-control" placeholder="Add Todo" id="task" name="task">
+                                 <input type="text" class="form-control capital-bold" placeholder="Add Todo" id="task" name="task">
                                 </div>                  
                               </div>
                               </div>

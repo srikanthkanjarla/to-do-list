@@ -5,3 +5,13 @@
 .tab-pane {
     width: 60%;
 }
+
+.capital-bold {
+    text-transform: capitalize;
+    font-weight: bold;
+}
+
+.strike {
+    text-decoration: line-through;
+    color: #008000;
+}
