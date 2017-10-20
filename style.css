@@ -1,0 +1,108 @@
+body{
+    margin: 0;
+    padding: 0;
+ 
+}
+ .container{
+     background-color: #eceff0;
+      
+ }
+.banner{
+    background-color:#989090;
+    color:#fff;
+    text-align: center;
+    padding:20px;
+    
+}
+ 
+.filter-bar{
+    
+    height: 50px;
+    background-color:#ff9098;
+          
+}
+.filter-bar>p{
+    line-height: 45px;
+    text-align: center;
+margin-top:0;
+    color:#fff;
+    font-weight: bold;
+}
+.filter-bar>p>a{
+    text-decoration: none;
+     color:#800;
+}
+.filter-bar>p>a:active{
+    color:#fff;
+}
+.filter-bar>p>a:visited{
+    color:#2ff;
+}
+ 
+ 
+.todo-content{
+    width:75%;
+    margin: 0 auto;
+    border:2px solid #03a9f4;
+    border-radius:22px;
+    padding:7px;
+}
+.todo-head{
+    background-color: #03a9f4;
+    padding:1px;
+    text-indent: 3;
+    color:#fff;
+}
+.todo-head>p{
+    margin-left:10px;
+}
+.todo-items{
+    padding:0 20px;
+}
+.todo-items #addTodo{
+    padding: 10px;
+    margin: 10px;
+    width: 40%;
+    color:#800080;
+}
+.todo-items .items{
+    list-style-type: none;
+}
+.items li:nth-child(even){
+   background:#ff9098;
+     margin: 5px;
+     padding: 10px;
+     color:#fff;
+     text-transform: capitalize;
+}
+.items li:nth-child(odd){
+      background-color: #989090;  
+      margin: 5px;
+      padding: 10px;
+      color:#fff;
+      text-transform: capitalize;
+ }
+ 
+ .strike{
+    text-decoration: line-through;
+    text-decoration-color:#800;
+    text-decoration-line: solid;
+     
+} 
+.inner{
+    color: #fff;
+}
+ 
+.task-delete{
+    float:right;
+    text-decoration: none;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-transform: lowercase;
+    color:#fff;
+    margin-right: 10px;
+}
+.task-delete:hover{
+    font-weight: bold;
+    color:#600080;
+    text-transform: uppercase;
+}

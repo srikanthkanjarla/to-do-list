@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+    function sendData(e){
+        if(e.keyCode === 13){
+            
+            $.ajax({
+                url:'test.php',
+                method:'GET',
+                data:{name:'sri'},
+                success:function(res){
+                    console.log(res);
+                }
+
+            })
+            //.done(function(res){
+              //  console.log(res);
+            //})
+            /*var data = document.getElementById("data").value;
+            
+            var x=new XMLHttpRequest();
+            x.open("GET","todo.php");
+            x.setRequestHeader("Content-Type","text/html");
+            x.onreadystatechange = function(){
+                console.log(x.responseText);
+            }
+            x.send('good');*/
+        }
+    }
+    </script>
+</head>
+<body>
+<input type="text" id='data' onkeyup="sendData(event)">
+</body>
+
+</html>
