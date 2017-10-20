@@ -1,121 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title>To do list </title>
-    <meta charset="utf-8">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo Manager</title>
+      
+    <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <!-- user styles -->
-    <link rel="stylesheet" href="css/default.css">
-
 </head>
-
 <body>
-
-    <div class="wrapper">
-        <div class="todo-form-box">
-            <h2>Add New Task </h2>
-            <form id="add-task">
-                <label for="task">Enter Task Name</label>
-                <input type="text" class=" input-todo-text" placeholder="New Task ..." id="task" name="task" required>
-                <label for="date"><span class="glyphicon glyphicon-calender"></span></label>
-                <input type="text" class="input-date" id="date" class="" name="date" placeholder="Pick Date" required>
-                <input type="submit" name="add-todo" id="submit" class="submit-btn" value="Add Task">
-            </form>
+    <div class="container">
+        <div class="banner">
+                
+                <h1>To-do Application</h1>
+                 
         </div>
-
-        <br>
-        <div class="container-fluid">
-            <!-- Tab panes -->
-            <div class="row" id="home">
-                <h4>Main Focus</h4>
-                <hr>
-                <div class="col-md-4">
-                    <div class="panel panel-success">
-                        <div class="panel-heading capital-case">
-                            <p>Yesterday Task's</p>
-                        </div>
-                        <div class="panel-body capital-case">
-                            <ul class="text-success todo-tasks yesterday-tasks">
-
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading capital-case">
-                            <p id="">Today's Focus</p>
-                        </div>
-                        <div class="panel-body capital-case">
-                            <ul class="text-primary todo-tasks today-tasks"> </ul>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading capital-case">
-                            <p id="">Tommorow's Tasks</p>
-                        </div>
-                        <div class="panel-body capital-case">
-                            <ul class="text-danger todo-tasks tomorrow-tasks"> </ul>
-                        </div>
-                    </div>
-                </div>
+        <div class="content">    
+            <div class="filter-bar">
+              <p>Filters : <a href="#" id="all">All</a> | <a href="#" id="active">Active</a> | <a href="#" id="pending">Completed</a></p>
             </div>
-            <p></p>
-            <p></p>
-            <div class="row dashboard">
-                <h2>Dashboard</h2>
-                <hr>
-                <div class="col-md-4">
-                    <div class="panel panel-info">
-                        <div class="panel-heading capital-case">
-                            <p id="">Todo's : Done</p>
-                        </div>
-                        <div class="panel-body capital-case">
-                            <ul class="text-info todo-tasks done-tasks"> </ul>
-                        </div>
-                    </div>
+           
+            <div class="todo-content">
+                <div class="todo-head">
+                        <p id="todo-count">Tasks left : </p>
                 </div>
-                <div class="col-md-4">
-                    <div class="panel panel-success">
-                        <div class="panel-heading capital-case">
-                            <p id="">Todo's : Active</p>
-                        </div>
-                        <div class="panel-body capital-case">
-                            <ul class="text-success todo-tasks active-tasks"> </ul>
-                        </div>
+               
+                    <div class="todo-items">
+                        <input type="text" name="todo" id="addTodo" placeholder="What is in your mind?" onkeypress="todo.tasks.addNewTask(event)">
+                        <ul class="items">
+                            
+                        </ul>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-warning">
-                        <div class="panel-heading capital-case">
-                            <p id="">Todo's : Deleted</p>
-                        </div>
-                        <div class="panel-body capital-case">
-                            <ul class="text-warning todo-tasks deleted-tasks"> </ul>
-                        </div>
-                    </div>
-                </div>
+                    
             </div>
+            
+        
+
         </div>
+        
+
     </div>
-
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="js/default.js"></script>
-
+    <script src="app.js"></script>
 </body>
-
 </html>
