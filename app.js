@@ -1,39 +1,37 @@
 //todo object (root)
 var todo ={
+    date:{
+        month:['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'],
+        getDateString:function(date){
+            let dateStr = this.month[date.getMonth()] +" " +date.getDate() +" "+ date.getFullYear('YY');
+            return dateStr;
+        }
+    },
     filters:{
         all:'allTasks',
         active:'activeTasks',
         completed:'completedTasks'
     },
+    actions:{
+        addNew:'addNewTask',
+        editTask:'editTitle',
+        getTasks:'getTasks',
+        status:'updateStatus',
+        visibility:'updateVisibility',
+    },
     activeFilter:[],
-
-    //tasks object -> methods -> addNewTasks, getTasks, viewTasks
     tasks:{
-        addNewTask : function(e){
-            if(e.keyCode===13 || e.charCode === 13 || e.key ==="Enter"){                   
-                var taskItem = $('#addTodo').val().trim();
-                if(taskItem!==''){
-                    var data={
-                        taskTitle:taskItem,
-                        action:'addNewTask'
-                    }
-                    
-                    $.ajax({
-                        url:'todo.php',
-                        method:'POST',
-                        data:data,
-                        success:function(res){                 
-                            $(".items").text('');
-                            $('#addTodo').val('');
-                            todo.tasks.getTasks(todo.activeFilter);                         
-                        }
-                    })
-                   
-                }else{
-                     alert('Please Enter task title');
-                }      
-                
-            }    
+        taskAction:function(data){
+            $.ajax({
+                url:'todo.php',
+                method:'POST',
+                data:data,
+                success:function(res){                 
+                    $('#addTodo').val('');
+                    todo.tasks.getTasks(todo.activeFilter);   
+                    console.log(res);                      
+                }
+            })
         },
         getTasks:function(filter){
             $.ajax({
@@ -42,78 +40,53 @@ var todo ={
                     data:{
                         action:filter                    
                          },
-                    success:function(res){   
-                            $(".items").text('');   //clear tasks    
-                                                             
-                            todo.tasks.viewTasks(JSON.parse(res));
-                                                                    
+                    success:function(res){                                                                                            
+                            todo.tasks.viewTasks(JSON.parse(res));                                                                    
                     }
             })
-            
         },
         viewTasks:function(data){
+            $(".items").text('') //clear all tasks before loaing
              $("#todo-count").text('Tasks Count :' + data.length);
             for(key in data){
+                var date_added = new Date(data[key].date_added);
+                var date_complete = new Date(data[key].date_added);
                 if(data[key].status == 2){
-                    $(".items").append("<li id="+data[key].id+"><input type='checkbox' checked><span class='strike'>"+data[key].task+"</span> <a class='task-delete' href='#'>x</a></li>");
+                    $(".items").append("<li id="+data[key].id+"><span class='task-title strike'><input type='checkbox' checked> "+data[key].task+" </span> <span class='start'>Start: "+ todo.date.getDateString(date_added)+ " </span><span class='end'>Done: "+todo.date.getDateString(date_complete)+ "</span><a class='task-delete' href='#'> x</a></li>");
                 }else{
-                    $(".items").append("<li id="+data[key].id+"><input type='checkbox' ><span> <span class='inner'>"+data[key].task+"</span></span><a class='task-delete' href='#'>x</a></li>");
-                }
-                
-              
+                    $(".items").append("<li id="+data[key].id+"><span class='task-title'><input type='checkbox' >  "+data[key].task+" </span> <span class='start'>Start:- "+ todo.date.getDateString(date_added)+" </span><span class='end'></span> <a class='task-delete' href='#'> x</a></li>");
+                }  
             }
         }
     }, //end of tasks obj
-    
-    //update object->methods-> taskStatus(), taskVisibility()
-    update:{ 
-        taskStatus:function(key){
-            $.ajax({
-                type: "POST",
-                url: "todo.php",
-                data: {
-                  action: "updateStatus",
-                  id: key
-                },
-                cache: false,
-                success: function(response) {
-                  console.log("status changed sucessfully");
-                }
-              });
-        },
-        taskVisibility:function(key){
-            $.ajax({
-                type: "POST",
-                url: "todo.php",
-                data: {
-                  action: "updateVisibility",
-                  id: key
-                },
-                cache: false,
-                success: function(response) {
-                    console.log("visibility changed sucessfully");
-                }
-              });
-        }
-    }
-    } // end of todo object
+} // end of todo object
     
     //display all tasks on loading
     if(todo.activeFilter !== todo.filters.all){
       todo.tasks.getTasks(todo.filters.all);
       todo.activeFilter=todo.filters.all;
     }
-    
+    //add new task 
+    function addNewTask(e){
+        if(e.keyCode===13 || e.charCode === 13 || e.key ==="Enter"){                   
+            var taskItem = $('#addTodo').val().trim();
+            if(taskItem!==''){
+                var data={
+                    taskTitle:taskItem,
+                    action:todo.actions.addNew
+                }
+            }
+            todo.tasks.taskAction(data);            
+        }
+    }
     //display all tasks on applying filter - all
     $("#all").on('click',function(e){
         if(todo.activeFilter !== todo.filters.all){
-            e.preventDefault();
-             
+            e.preventDefault();             
             todo.tasks.getTasks(todo.filters.all);
             todo.activeFilter=todo.filters.all;
         }
     })
-    
     //display active tasks on applying filter - active
     $("#active").on('click',function(e){
         if(todo.activeFilter !== todo.filters.active){
@@ -122,7 +95,6 @@ var todo ={
             todo.activeFilter=todo.filters.active;
         }
     })
-    
     //display all tasks on applying filter - completed
     $("#pending").on('click',function(e){
         if(todo.activeFilter !== todo.filters.completed){
@@ -131,36 +103,26 @@ var todo ={
             todo.activeFilter=todo.filters.completed;
         }
     })
-    
-    //Update todo status on checking checkbox with 0/1 ( 0:Active | 1:Completed)
+    //Update todo status on checking checkbox 
     $(".items").on('click','input:checkbox',function(e){
-        var id =$(this).parent().attr('id'); 
+        var id =$(this).parent().parent().attr('id'); 
+        
         $(this).next().toggleClass('strike');
-        todo.update.taskStatus(id);
-        todo.tasks.getTasks(todo.activeFilter);        
-      
+        data={
+            id:id,
+            action:todo.actions.status
+        }
+        todo.tasks.taskAction(data);     
     })
-    
-    //Update task visibility to hide it from display
+    //Update task visibility to hide it from display on clicking X
     $(".items").on('click','.task-delete',function(e){
-        var id =$(this).parent().attr('id');
-        e.preventDefault();     
-       todo.update.taskVisibility(id);
-        todo.tasks.getTasks(todo.activeFilter);
+        var id =$(this).closest('li').attr('id');
+         console.log($(this).closest('li').attr('id'));
+        e.preventDefault();  
+        data={
+            id:id,
+            action:todo.actions.visibility
+        }
+        todo.tasks.taskAction(data); 
         })
-    
-    
-    //video clip toggle 
-    function toggleVid(event){
-        event.preventDefault();
-    $('#vid').toggle();
-    if($('#toggle-label').text()=='show'){
-        $('#toggle-label').text('hide');
-    }else{
-        $('#toggle-label').text('show');
-    }
-    
-    }
-    var vid = document.getElementById("vid");
-    vid.playbackRate = 0.4; 
-       
+     
